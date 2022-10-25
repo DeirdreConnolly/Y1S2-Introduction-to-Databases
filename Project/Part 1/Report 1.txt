@@ -1,0 +1,69 @@
+-- Student No:	R00112962
+-- Name:		Deirdre Connolly
+-- Programme:	COMP1AX
+
+
+-- CREATING TABLE --
+CREATE TABLE Books (
+	ISBN int(13) NOT NULL,
+	Title varchar(100) NOT NULL,
+	Author varchar(30) NOT NULL,
+	Year int(4) NOT NULL,
+	Genre varchar(20) NOT NULL,
+	OnLoan varchar(10),
+PRIMARY KEY (ISBN)
+);
+
+CREATE TABLE Members (
+	MemNo int(6) NOT NULL,
+	sName varchar(15) NOT NULL,
+	fName varchar(15) NOT NULL,
+	Section varchar(5) NOT NULL,
+	NumBooksOnLoan int(1),
+	Overdraft int(10),
+	Phone int(15) NOT NULL,
+	Address varchar(50) NOT NULL,
+PRIMARY KEY (MemNo)
+);
+
+CREATE TABLE Loan (
+	RefNo int(6) NOT NULL,
+	MemNo int(6) NOT NULL,
+	ISBN int(13) NOT NULL,
+	Date Date NOT NULL,
+	OverdraftFee int(10),
+PRIMARY KEY (RefNo),
+-- FOREIGN KEY (MemNo) REFERENCES Members(MemNo),									-- Causes error, cannot add foreign key constraint
+FOREIGN KEY (ISBN) REFERENCES Books(ISBN)books
+);
+
+
+-- INSERTING DATA INTO TABLE --
+INSERT INTO Books
+VALUES ("1", "Harry Potter", "JK Rowling", "1997", "Fiction", "NULL");
+INSERT INTO Books
+VALUES ("2", "A Song of Ice and Fire", "George RR Martin", "1996", "Fiction", "NULL");
+INSERT INTO Books
+VALUES ("3", "The Magicians Guild", "Trudi Canavan", "2001", "Fiction", "NULL");	-- Apostrophes cause problems, figure this out
+INSERT INTO Books
+VALUES ("4", "The Cuckoos Calling", "Robert Galbraith", "2013", "Crime", "NULL");
+INSERT INTO Books
+VALUES ("5", "An Astronauts Guide to Life on Earth", "Chris Hadfield", "2013", "Biography", "NULL");
+
+
+INSERT INTO Members
+VALUES ("1", "Stark", "Arya", "Child", "2", "0", "123456789", "Winterfell, The North");
+
+INSERT INTO Loan
+VALUES ("1", "1", "2", "2018-04-26", "0");											-- Date: YYYY/MM/DD
+			
+
+
+
+
+
+
+
+
+
+

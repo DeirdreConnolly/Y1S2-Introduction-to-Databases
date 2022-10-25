@@ -1,0 +1,87 @@
+-- STUDENT ID:	R00112962
+-- SURNAME:		Connolly
+-- NAME:		Deirdre
+-- CLASS:		COMP1A-X
+
+
+-- INSERT/UPDATE DATA --
+INSERT INTO Members 
+(MemNo, sName, fName, Section, NumBooksOnLoan, Overdraft, Phone, Address)
+VALUES
+("2", "Stark", "Ned", "Adult", "1", "0", "234567890", "Winterfell, The North"),
+("3", "Reed", "Jojen", "Adult", "6", "8", "345678901", "Greywater Watch, The North"),
+("4", "Targaryen", "Daenerys", "Adult", "7", "2", "456789012", "Dragonstone, The Crownlands"),
+("5", "Tarly", "Samwell", "Adult", "18", "0", "567890123", "Horn Hill, The Reach");
+
+UPDATE Books
+SET Title = "The Magician's Guild"													-- Fixed apostrophe
+WHERE ISBN = 3;
+
+UPDATE Books
+SET Title = "The Cuckoo's Calling"													-- Fixed apostrophe
+WHERE ISBN = 4;
+
+UPDATE Books
+SET Title = "As Astronaut's Guild to Life on Earth"									-- Fixed apostrophe
+WHERE ISBN = 5;
+
+ALTER TABLE Loan
+DROP COLUMN OverdraftFee;
+
+ALTER TABLE Loan
+ADD Overdraft int(10);
+
+INSERT INTO Loan
+VALUES ("2", "3", "5", "2018-05-01", "8");
+
+ALTER TABLE Loan
+DROP COLUMN Overdraft; 
+
+ALTER TABLE Members																	-- Changed from int to allow for decimal when using currency
+MODIFY COLUMN Overdraft Decimal(10,2);
+
+UPDATE Members
+SET Overdraft = "18.60"
+WHERE MemNo = "3";
+
+UPDATE Members
+SET Overdraft = "5.00"
+WHERE MemNo = "4";
+
+INSERT INTO Loan
+VALUES ("3", "5", "1", "2018-05-02");
+
+INSERT INTO Loan
+VALUES 
+("4", "1", "4", "2018-05-02"),
+("5", "2", "5", "2018-05-02");
+
+ALTER TABLE Books
+DROP COLUMN OnLoan;
+
+RENAME TABLE Loan TO Loans;
+
+
+-- QUERIES --
+SELECT Memno, sName, fName
+FROM Members;
+
+SELECT * FROM Members
+WHERE Address LIKE "%North%";
+
+SELECT * FROM Books
+WHERE GENRE = "Crime";
+
+SELECT * FROM Members
+WHERE Overdraft > 15;
+
+
+-- REASONS FOR DESIGN --
+/* Having constructed my initial desgin for the library database during last week's lab, I realised that I needed to make a few changes in order to create a more efficient database system. First of all, I solved the issue I was having with inputting an apostrophe into a field, such as in a book title. As single quotes are used in SQL to indicate a string, this caused an error. To bypass this, you simply need to double up on the single quote for it to register as an apostrophe.
+
+Next in my changes, I noticed that I had the column Overdraft in the Members table, and OverdraftFee in the Loans table. I opted to drop the one in Members, changing the column in Loans to Overdraft. This reduces duplicates in the table. With this change, I set the datatype to deciaml in order to allow for currency.
+
+All three of my tables have a primary key (Books = ISBN, Members = MemNo, Loans = RefNo).
+I also made use of foreign keys, where possible, to connect my tables (Loans = MemNo, ISBN).
+
+At first, I had the third table named Loan. I decided to change this to Loans, as it fits more. It also matches my other names, Books and Members, establishing a more collective theme. */

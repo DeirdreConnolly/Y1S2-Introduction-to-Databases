@@ -1,0 +1,71 @@
+/* 
+STUDENT ID:	R00112962
+SURNAME:	Connolly
+NAME:		Deirdre
+CLASS:		COMP1A-X
+*/
+
+
+--Q1
+SELECT * FROM estateagent5thed.propertyforrent
+WHERE street LIKE "%Novar%";
+
+
+--Q2
+SELECT * FROM estateagent5thed.staff
+WHERE position = "Manager" AND dob > 1970;
+
+
+--Q3
+SELECT * FROM estateagent5thed.propertyforrent;
+SELECT type, count(type) AS "Num of Types of Property"
+FROM propertyforrent
+GROUP BY type;
+
+
+--Q4
+SELECT * FROM estateagent5thed.staff;
+SELECT branchno, count(*) AS "Num of Staff"
+FROM staff
+GROUP BY branchno
+ORDER BY branchno;
+
+
+--Q5
+SELECT * FROM estateagent5thed.staff;
+SELECT staffno, fname, lname, branch.Branchno, street, city, postcode FROM staff 
+INNER JOIN branch ON staff.Branchno = branch.branchno 
+WHERE branch.city = "Glasgow";
+
+
+--Q6
+SELECT * FROM estateagent5thed.viewing;
+SELECT privateowner.ownerno, fname, lname, propertyforrent.propertyno, street, city, postcode, type, rooms, rent FROM privateowner
+INNER JOIN propertyforrent ON propertyforrent.ownerno = privateowner.ownerno
+INNER JOIN viewing ON viewing.propertyno = propertyforrent.propertyno
+WHERE viewdate LIKE "%-04-%";
+
+
+--Q7
+SELECT * FROM estateagent5thed.staff;
+SELECT fname, lname, Branchno
+FROM staff
+WHERE branchno = 
+	(SELECT branchno
+     FROM branch
+     WHERE city LIKE "%Glasgow%");
+
+
+--Q8
+SELECT * FROM estateagent5thed.privateowner;
+SELECT ownerno, fname, lname
+FROM privateowner
+WHERE ownerno IN 
+	(SELECT ownerno 
+     FROM propertyforrent 
+     WHERE propertyno IN
+		(SELECT propertyno 
+         FROM viewing 
+         WHERE viewdate 
+         LIKE "%-04-%"));
+		 

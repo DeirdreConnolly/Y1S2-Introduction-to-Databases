@@ -1,0 +1,62 @@
+-- STUDENT ID:	R00112962
+-- SURNAME:		Connolly
+-- NAME:		Deirdre
+-- CLASS:		COMP1A-X
+
+
+-- Q1 --
+SELECT * FROM Books
+WHERE Genre = "Biography";
+
+
+-- Q2 --
+SELECT Section, COUNT(Section) NumSection FROM Members
+GROUP By Section;
+
+
+-- Q3 -- 
+SELECT MemNo, sName, fName, Overdraft FROM Members
+WHERE Overdraft > 0;
+
+
+-- Q4 --
+SELECT Title, Author, COUNT(Author) NumBooksByAuthor FROM Books
+GROUP BY Author HAVING NumBooksByAuthor > 2;
+
+
+-- Q5 --
+SELECT sName, fName, Section, Books.Title FROM Members
+INNER JOIN Loans ON Members.MemNo = Loans.MemNo
+INNER JOIN Books ON Books.ISBN = Loans.ISBN
+WHERE Genre = "Fiction"
+ORDER BY Section desc;
+
+
+-- Q6 --
+SELECT sName, fName, Books.Title, Books.Author, Loans.Date FROM Members
+INNER JOIN Loans ON Members.MemNo = Loans.MemNo
+INNER JOIN Books ON Books.ISBN = Loans.ISBN
+WHERE Books.ISBN = "4" AND Date LIKE "2018%";
+
+
+-- Q7 --
+SELECT sName, fName, Section FROM Members
+WHERE MemNo IN
+   (SELECT MemNo
+	FROM Loans
+	WHERE ISBN IN
+	   (SELECT ISBN
+		FROM Books
+		WHERE Genre = "Fiction"))
+ORDER BY Section desc;
+
+
+-- Q8 --
+SELECT sName, fName FROM MEMBERS
+WHERE MemNo IN
+   (SELECT MemNo
+	FROM Loans
+	WHERE ISBN IN
+	   (SELECT ISBN
+		FROM Loans
+		WHERE ISBN = "1" AND Date LIKE "2018%"));
